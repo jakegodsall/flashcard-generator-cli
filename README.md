@@ -74,8 +74,41 @@ The Flashcard Generator CLI offers flexible modes for both inputting data and ex
 3. **Plain Text File Mode**: In Plain Text File Mode, you can input data by providing a plain text file where each line contains a word or phrase. The application reads the file and generates flashcards for each line. Each flashcard is stored in memory for exporting later.
 
 ### Output Modes
+
 1. **CSV Mode**: Each flashcard is exported as a separate line in a CSV file where fields are separated by commas.
 2. **JSON Mode**: Flashcards are exported as a JSON file.
+
+## Language Configuration
+
+The Flashcard Generator CLI allows for language-specific configurations to tailor the flashcard generation process to the nuances of different languages.
+Language-specific features are configured via the `language_config.json` file located in the `src/main/resources` directory. This file includes options for stress symbols, formality, gender, dialects, politeness levels, and conjugation tenses.
+
+Example `language_config.json`:
+
+```json
+{
+"ru": {
+   "name": "Russian",
+   "supports_stress": true,
+   "tenses": ["PAST", "PRESENT", "FUTURE"],
+   "genders": ["MASCULINE", "FEMININE", "NEUTER"]
+  },
+"pl": {
+   "name": "Polish",
+   "supports_stress": false,
+   "tenses": ["PAST", "PRESENT", "FUTURE"],
+   "genders": ["MASCULINE", "FEMININE", "NEUTER"]
+},
+"es": {
+   "name": "Spanish",
+   "supports_stress": false,
+   "tenses": ["PAST", "PRESENT", "FUTURE"],
+   "genders": ["MASCULINE", "FEMININE"]
+  }
+}
+```
+
+The choice of languages and the specific features that can be configured are heavily dependent on the capabilities of the underlying language model that the application uses. The language model's ability to accurately generate content in different languages and handle linguistic nuances like stress, gender, and tense is a key factor in determining how well the application can support each language.
 
 ## Future Plans
 
