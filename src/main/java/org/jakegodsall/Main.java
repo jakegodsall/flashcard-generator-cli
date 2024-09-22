@@ -14,7 +14,11 @@ public class Main {
 
     private static final Option INPUT_OPTION = new Option("i", "input", true, "Choose the type of input to be provided");
     private static final String INPUT_DEFAULT_VALUE = "str";
-    private static final List<String> INPUT_VALID_VALUES = Arrays.asList("str", "file");
+    private static final List<String> INPUT_VALID_VALUES = Arrays.asList("string", "file");
+
+    private static final Option FLASHCARD_OPTION = new Option("f", "flashcard", true, "Choose the type of flashcard to generate");
+    private static final String FLASHCARD_DEFAULT_VALUE = "word";
+    private static final List<String> FLASHCARD_VALID_VALUES = Arrays.asList("word", "sentence");
 
     private static final Option MODE_OPTION = new Option("m", "mode", true, "Choose between sequential or concurrent flashcard generation");
     private static final String MODE_DEFAULT_VALUE = "seq";
@@ -30,6 +34,7 @@ public class Main {
         // Define the command line arguments
         Options options = new Options();
         options.addOption(INPUT_OPTION);
+        options.addOption(FLASHCARD_OPTION);
         options.addOption(MODE_OPTION);
         options.addOption(OUTPUT_OPTION);
 
@@ -42,10 +47,12 @@ public class Main {
 
             // Process the input
             String input = getValidaValueForOption(cmd, "i", INPUT_VALID_VALUES, INPUT_DEFAULT_VALUE);
+            String flashcard = getValidaValueForOption(cmd, "f", FLASHCARD_VALID_VALUES, FLASHCARD_DEFAULT_VALUE);
             String mode = getValidaValueForOption(cmd, "m", MODE_VALID_VALUES, MODE_DEFAULT_VALUE);
             String output = getValidaValueForOption(cmd, "o", OUTPUT_VALID_VALUES, OUTPUT_DEFAULT_VALUE);
 
             System.out.println("Running with input " + input);
+            System.out.println("Running with flashcard " + flashcard);
             System.out.println("Running with mode " + mode);
             System.out.println("Running with output " + output);
 

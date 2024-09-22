@@ -39,22 +39,15 @@ public class CommandLineInterface {
 
     public void run() {
         try (BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in))) {
-
             // API Key Handling
             apiKeyHandler.handle(consoleReader);
-
             // Options handling
             Language chosenLanguage = getLanguageFromUser(consoleReader);
-            // LanguageOptionsHandler loh = new LanguageOptionsHandler(chosenLanguage, bufferedReader);
-            // Options selectedOptions = loh.getOptions();
             Options selectedOptions = Options.builder().build();
-
             // Get flashcard type
             FlashcardType flashcardType = getFlashcardType(consoleReader);
-
             // Get input mode
             InputMode inputMode = getInputMode(consoleReader);
-
             switch (inputMode) {
                 case InputMode.INTERACTIVE -> inputService = new InputServiceInteractiveMode(consoleReader);
                 case InputMode.COMMA_SEPARATED_STRING -> inputService = new InputServiceCommaSeparatedStringMode(consoleReader);
