@@ -3,11 +3,11 @@ package org.jakegodsall.view.cli;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.impl.client.HttpClients;
 import org.jakegodsall.config.impl.ApiKeyConfigImpl;
-import org.jakegodsall.services.FlashcardService;
-import org.jakegodsall.services.impl.FlashcardServiceGPTImpl;
-import org.jakegodsall.services.impl.HttpClientServiceGPTImpl;
-import org.jakegodsall.services.impl.JsonParseServiceGPTImpl;
-import org.jakegodsall.services.impl.PromptServiceGPTImpl;
+import org.jakegodsall.services.flashcard.FlashcardService;
+import org.jakegodsall.services.flashcard.impl.FlashcardServiceGPTImpl;
+import org.jakegodsall.services.http.impl.HttpClientServiceGPTImpl;
+import org.jakegodsall.services.json.impl.JsonParseServiceGPTImpl;
+import org.jakegodsall.services.prompt.impl.PromptServiceGPTImpl;
 
 public class CommandLineInterfaceFactory {
     public static CommandLineInterface createGPTCommandLineInterface() {

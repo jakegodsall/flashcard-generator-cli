@@ -15,7 +15,6 @@ public class ApiKeyHandler {
     public void handle(BufferedReader bufferedReader) {
         try {
             String api = apiKeyConfig.getApiKeyFromFile(ApiKeyConfigImpl.CONFIG_DIR);
-            System.out.println("API Key Found: " + api);
         } catch (ApiKeyNotFoundException | IOException exception) {
             System.err.println(exception.getMessage());
             try {

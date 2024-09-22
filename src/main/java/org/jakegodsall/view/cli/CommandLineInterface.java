@@ -2,25 +2,30 @@ package org.jakegodsall.view.cli;
 
 import lombok.RequiredArgsConstructor;
 import org.jakegodsall.config.LanguageConfig;
-import org.jakegodsall.config.LanguageConfig;
 import org.jakegodsall.models.Language;
 import org.jakegodsall.models.Options;
 import org.jakegodsall.models.enums.FlashcardType;
 import org.jakegodsall.models.enums.InputMode;
 import org.jakegodsall.models.enums.OutputMode;
 import org.jakegodsall.models.flashcards.Flashcard;
-import org.jakegodsall.services.FlashcardService;
-import org.jakegodsall.services.InputService;
-import org.jakegodsall.services.OutputService;
-import org.jakegodsall.services.impl.*;
+import org.jakegodsall.services.flashcard.FlashcardService;
+import org.jakegodsall.services.input.InputService;
+import org.jakegodsall.services.output.OutputService;
+import org.jakegodsall.services.input.impl.InputServiceCommaSeparatedStringMode;
+import org.jakegodsall.services.input.impl.InputServiceInteractiveMode;
+import org.jakegodsall.services.input.impl.InputServicePlainTextFileMode;
+import org.jakegodsall.services.output.impl.OutputServiceCsvMode;
+import org.jakegodsall.services.output.impl.OutputServiceJsonMode;
 import org.jakegodsall.utils.FilenameUtils;
 
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @RequiredArgsConstructor
 public class CommandLineInterface {
@@ -33,8 +38,7 @@ public class CommandLineInterface {
     private OutputService outputService;
 
     public void main() {
-        try (
-                BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in))) {
+        try (BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in))) {
 
             // API Key Handling
             apiKeyHandler.handle(consoleReader);
@@ -52,13 +56,16 @@ public class CommandLineInterface {
             InputMode inputMode = getInputMode(consoleReader);
 
             switch (inputMode) {
-                case InputMode.INTERACTIVE -> inputService = new InputServiceInteractiveMode(consoleReader, flashcardService);
-                case InputMode.COMMA_SEPARATED_STRING -> inputService = new InputServiceCommaSeparatedStringMode(consoleReader, flashcardService);
-                case InputMode.PLAIN_TEXT_FILE -> inputService = new InputServicePlainTextFileMode(consoleReader, flashcardService);
+                case InputMode.INTERACTIVE -> inputService = new InputServiceInteractiveMode(consoleReader);
+                case InputMode.COMMA_SEPARATED_STRING -> inputService = new InputServiceCommaSeparatedStringMode(consoleReader);
+                case InputMode.PLAIN_TEXT_FILE -> inputService = new InputServicePlainTextFileMode(consoleReader);
             }
 
-            // Process the input and create flashcards
-            List<Flashcard> flashcards = inputService.getInput(flashcardType, chosenLanguage, selectedOptions);
+            // Process the input
+            List<String> words = inputService.getInput();
+
+            List<Flashcard> flashcards = flashcardService.generateFlashcardsInteractively(flashcardType, chosenLanguage, selectedOptions);
+//            List<Flashcard> flashcards = flashcardService.generateFlashcardsConcurrently(words, flashcardType, chosenLanguage, selectedOptions);
 
             // Get output mode
             OutputMode outputMode = getOutputMode(consoleReader);
@@ -81,6 +88,10 @@ public class CommandLineInterface {
 
         } catch (IOException ioException) {
             System.err.println(ioException.getMessage());
+//        } catch (ExecutionException e) {
+//            throw new RuntimeException(e);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
         }
     }
 

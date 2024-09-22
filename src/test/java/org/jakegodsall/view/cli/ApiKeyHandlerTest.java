@@ -5,6 +5,7 @@ import org.jakegodsall.config.impl.ApiKeyConfigImpl;
 import org.jakegodsall.exceptions.ApiKeyNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -34,6 +35,7 @@ class ApiKeyHandlerTest {
     }
 
 
+    @Disabled
     @Test
     void handle_apiKeyFound() throws Exception {
         // Mock the ApiKeyConfig

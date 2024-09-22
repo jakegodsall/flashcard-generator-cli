@@ -94,4 +94,4 @@ class LanguageOptionsHandlerTest {
         assertThat(languageOptionsHandler.getGender(languageOptionsHandler.getBufferedReader()))
                 .isEqualTo(Gender.FEMININE);
     }
-}`
+}
