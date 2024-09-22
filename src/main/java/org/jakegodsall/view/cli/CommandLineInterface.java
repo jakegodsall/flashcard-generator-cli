@@ -37,7 +37,7 @@ public class CommandLineInterface {
     private InputService inputService;
     private OutputService outputService;
 
-    public void main() {
+    public void run() {
         try (BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in))) {
 
             // API Key Handling
