@@ -28,9 +28,9 @@ public class Main {
     private static final String OUTPUT_DEFAULT_VALUE = "csv";
     private static final List<String> OUTPUT_VALID_VALUES = Arrays.asList("csv", "json");
 
-    public static void main(String[] args) {
-        CommandLineInterface cli = CommandLineInterfaceFactory.createGPTCommandLineInterface();
+    private static CommandLineInterface cli;
 
+    public static void main(String[] args) {
         // Define the command line arguments
         Options options = new Options();
         options.addOption(INPUT_OPTION);
@@ -45,21 +45,29 @@ public class Main {
             // Parse the command line arguments
             CommandLine cmd = parser.parse(options, args);
 
-            // Process the input
-            String input = getValidaValueForOption(cmd, "i", INPUT_VALID_VALUES, INPUT_DEFAULT_VALUE);
-            String flashcard = getValidaValueForOption(cmd, "f", FLASHCARD_VALID_VALUES, FLASHCARD_DEFAULT_VALUE);
-            String mode = getValidaValueForOption(cmd, "m", MODE_VALID_VALUES, MODE_DEFAULT_VALUE);
-            String output = getValidaValueForOption(cmd, "o", OUTPUT_VALID_VALUES, OUTPUT_DEFAULT_VALUE);
+            // check if no arguments were passed
+            if (cmd.getOptions().length == 0) {
+                // start up the app in interactive mode
+                cli = CommandLineInterfaceFactory.createGPTCommandLineInterface();
+            } else {
+                // Process the input
+                String input = getValidaValueForOption(cmd, "i", INPUT_VALID_VALUES, INPUT_DEFAULT_VALUE);
+                String flashcard = getValidaValueForOption(cmd, "f", FLASHCARD_VALID_VALUES, FLASHCARD_DEFAULT_VALUE);
+                String mode = getValidaValueForOption(cmd, "m", MODE_VALID_VALUES, MODE_DEFAULT_VALUE);
+                String output = getValidaValueForOption(cmd, "o", OUTPUT_VALID_VALUES, OUTPUT_DEFAULT_VALUE);
 
-            System.out.println("Running with input " + input);
-            System.out.println("Running with flashcard " + flashcard);
-            System.out.println("Running with mode " + mode);
-            System.out.println("Running with output " + output);
+                System.out.println("Running with input " + input);
+                System.out.println("Running with flashcard " + flashcard);
+                System.out.println("Running with mode " + mode);
+                System.out.println("Running with output " + output);
 
+                // Create a different type of CLI interface
+            }
         } catch (ParseException ex) {
             ex.printStackTrace();
         }
 
+        cli.run();
     }
 
     private static String getValidaValueForOption(CommandLine cmd, String option, List<String> validValues, String defaultValue) {
