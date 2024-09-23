@@ -88,6 +88,11 @@ public class CommandLineInterface {
         }
     }
 
+    public void run(String input, String language, String flashcardType, String mode, String output, String data) {
+        System.out.println("NON INTERACTIVE MODE RUNNING");
+        System.out.println(data);
+    }
+
     public void printLanguageOptions() {
         System.out.println("Languages:");
         for (Map.Entry<String, String> entry : languages.entrySet()) {

@@ -16,6 +16,10 @@ public class Main {
     private static final String INPUT_DEFAULT_VALUE = "str";
     private static final List<String> INPUT_VALID_VALUES = Arrays.asList("string", "file");
 
+    private static final Option LANGUAGE_OPTION = new Option("l", "language", true, "Choose the language");
+    private static final String LANGUAGE_DEFAULT_VALUE = "russian";
+    private static final List<String> LANGUAGE_VALID_VALUES = Arrays.asList("russian", "polish", "spanish");
+
     private static final Option FLASHCARD_OPTION = new Option("f", "flashcard", true, "Choose the type of flashcard to generate");
     private static final String FLASHCARD_DEFAULT_VALUE = "word";
     private static final List<String> FLASHCARD_VALID_VALUES = Arrays.asList("word", "sentence");
@@ -31,15 +35,20 @@ public class Main {
     private static CommandLineInterface cli;
 
     public static void main(String[] args) {
+        cli = CommandLineInterfaceFactory.createGPTCommandLineInterface();
+
         // Define the command line arguments
         Options options = new Options();
         options.addOption(INPUT_OPTION);
+        options.addOption(LANGUAGE_OPTION);
         options.addOption(FLASHCARD_OPTION);
         options.addOption(MODE_OPTION);
         options.addOption(OUTPUT_OPTION);
 
         // Instantiate the command line parser
         CommandLineParser parser = new DefaultParser();
+
+        boolean isInteractiveMode = false;
 
         try {
             // Parse the command line arguments
@@ -48,26 +57,41 @@ public class Main {
             // check if no arguments were passed
             if (cmd.getOptions().length == 0) {
                 // start up the app in interactive mode
-                cli = CommandLineInterfaceFactory.createGPTCommandLineInterface();
+                isInteractiveMode = true;
             } else {
-                // Process the input
+                // Parse the options
                 String input = getValidaValueForOption(cmd, "i", INPUT_VALID_VALUES, INPUT_DEFAULT_VALUE);
+                String language = getValidaValueForOption(cmd, "l", LANGUAGE_VALID_VALUES, LANGUAGE_DEFAULT_VALUE);
                 String flashcard = getValidaValueForOption(cmd, "f", FLASHCARD_VALID_VALUES, FLASHCARD_DEFAULT_VALUE);
                 String mode = getValidaValueForOption(cmd, "m", MODE_VALID_VALUES, MODE_DEFAULT_VALUE);
                 String output = getValidaValueForOption(cmd, "o", OUTPUT_VALID_VALUES, OUTPUT_DEFAULT_VALUE);
 
-                System.out.println("Running with input " + input);
-                System.out.println("Running with flashcard " + flashcard);
-                System.out.println("Running with mode " + mode);
-                System.out.println("Running with output " + output);
+//                System.out.println("Running with input " + input);
+//                System.out.println("Running with language " + language);
+//                System.out.println("Running with flashcard " + flashcard);
+//                System.out.println("Running with mode " + mode);
+//                System.out.println("Running with output " + output);
 
-                // Create a different type of CLI interface
+                // Get the data
+                String[] arguments = cmd.getArgs();
+                String data = "";
+                if (arguments.length == 0) {
+                    System.out.println("Error: No data input provided.");
+                    System.out.println("Entering interactive mode: ");
+                    isInteractiveMode = true;
+                } else {
+                    data = arguments[0];
+                }
+
+                if (isInteractiveMode) {
+                    cli.run();
+                } else {
+                    cli.run(input, language, flashcard, mode, output, data);
+                }
             }
         } catch (ParseException ex) {
             ex.printStackTrace();
         }
-
-        cli.run();
     }
 
     private static String getValidaValueForOption(CommandLine cmd, String option, List<String> validValues, String defaultValue) {
