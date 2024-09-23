@@ -16,13 +16,16 @@ import org.jakegodsall.services.input.impl.InputServiceInteractiveMode;
 import org.jakegodsall.services.input.impl.InputServicePlainTextFileMode;
 import org.jakegodsall.services.output.impl.OutputServiceCsvMode;
 import org.jakegodsall.services.output.impl.OutputServiceJsonMode;
+import org.jakegodsall.utils.ConsoleUtils;
 import org.jakegodsall.utils.FilenameUtils;
 
 
+import javax.print.DocFlavor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -41,21 +44,22 @@ public class CommandLineInterface {
         try (BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in))) {
             // API Key Handling
             apiKeyHandler.handle(consoleReader);
-            // Options handling
-            Language chosenLanguage = getLanguageFromUser(consoleReader);
+
+            // LANGUAGE CHOICE
+            Language chosenLanguage = getLanguageMode(consoleReader);
             Options selectedOptions = Options.builder().build();
-            // Get flashcard type
-            FlashcardType flashcardType = getFlashcardType(consoleReader);
-            // Get input mode
+
+            // INPUT MODE CHOICE
             InputMode inputMode = getInputMode(consoleReader);
             switch (inputMode) {
                 case InputMode.INTERACTIVE -> inputService = new InputServiceInteractiveMode(consoleReader);
                 case InputMode.COMMA_SEPARATED_STRING -> inputService = new InputServiceCommaSeparatedStringMode(consoleReader);
                 case InputMode.PLAIN_TEXT_FILE -> inputService = new InputServicePlainTextFileMode(consoleReader);
             }
-
-            // Process the input
             List<String> words = inputService.getInput();
+
+            // FLASHCARD TYPE CHOICE
+            FlashcardType flashcardType = getFlashcardType(consoleReader);
 
             List<Flashcard> flashcards = flashcardService.generateFlashcardsInteractively(flashcardType, chosenLanguage, selectedOptions);
 //            List<Flashcard> flashcards = flashcardService.generateFlashcardsConcurrently(words, flashcardType, chosenLanguage, selectedOptions);
@@ -93,15 +97,10 @@ public class CommandLineInterface {
         System.out.println(data);
     }
 
-    public void printLanguageOptions() {
-        System.out.println("Languages:");
-        for (Map.Entry<String, String> entry : languages.entrySet()) {
-            System.out.println("[" + entry.getKey() + "] - " + entry.getValue());
-        }
-    }
 
-    public Language getLanguageFromUser(BufferedReader bufferedReader) throws IOException {
-        printLanguageOptions();
+
+    public Language getLanguageMode(BufferedReader bufferedReader) throws IOException {
+        ConsoleUtils.printLanguageOptions(languages);
         boolean validInput = false;
         String input = "";
         while (!validInput) {
@@ -119,10 +118,7 @@ public class CommandLineInterface {
     }
 
     public InputMode getInputMode(BufferedReader bufferedReader) throws IOException {
-        System.out.println("Choose an input mode:");
-        System.out.println("[1] Interactive Mode");
-        System.out.println("[2] Comma-separated String Mode");
-        System.out.println("[3] Plain Text File Mode");
+        ConsoleUtils.printInputModes();
 
         boolean validInput = false;
         String input = "";
@@ -158,9 +154,7 @@ public class CommandLineInterface {
     }
 
     public OutputMode getOutputMode(BufferedReader bufferedReader) throws IOException {
-        System.out.println("Choose an output mode:");
-        System.out.println("[1] CSV");
-        System.out.println("[2] JSON");
+        ConsoleUtils.printOutputModes();
 
         boolean validInput = false;
         String input = "";
@@ -188,9 +182,8 @@ public class CommandLineInterface {
     }
 
     public FlashcardType getFlashcardType(BufferedReader bufferedReader) throws IOException {
-        System.out.println("Choose a flashcard type:");
-        System.out.println("[1] Word Flashcard");
-        System.out.println("[2] Sentence Flashcard");
+        ConsoleUtils.printFlashcardModes();
+
         boolean validInput = false;
         String input = "";
         FlashcardType result = FlashcardType.WORD;

@@ -54,17 +54,19 @@ public class Main {
             // Parse the command line arguments
             CommandLine cmd = parser.parse(options, args);
 
+            String input = "", language = "", flashcard = "", mode = "", output = "", data = "";
+
             // check if no arguments were passed
             if (cmd.getOptions().length == 0) {
                 // start up the app in interactive mode
                 isInteractiveMode = true;
             } else {
                 // Parse the options
-                String input = getValidaValueForOption(cmd, "i", INPUT_VALID_VALUES, INPUT_DEFAULT_VALUE);
-                String language = getValidaValueForOption(cmd, "l", LANGUAGE_VALID_VALUES, LANGUAGE_DEFAULT_VALUE);
-                String flashcard = getValidaValueForOption(cmd, "f", FLASHCARD_VALID_VALUES, FLASHCARD_DEFAULT_VALUE);
-                String mode = getValidaValueForOption(cmd, "m", MODE_VALID_VALUES, MODE_DEFAULT_VALUE);
-                String output = getValidaValueForOption(cmd, "o", OUTPUT_VALID_VALUES, OUTPUT_DEFAULT_VALUE);
+                input = getValidaValueForOption(cmd, "i", INPUT_VALID_VALUES, INPUT_DEFAULT_VALUE);
+               language = getValidaValueForOption(cmd, "l", LANGUAGE_VALID_VALUES, LANGUAGE_DEFAULT_VALUE);
+                flashcard = getValidaValueForOption(cmd, "f", FLASHCARD_VALID_VALUES, FLASHCARD_DEFAULT_VALUE);
+                mode = getValidaValueForOption(cmd, "m", MODE_VALID_VALUES, MODE_DEFAULT_VALUE);
+                output = getValidaValueForOption(cmd, "o", OUTPUT_VALID_VALUES, OUTPUT_DEFAULT_VALUE);
 
 //                System.out.println("Running with input " + input);
 //                System.out.println("Running with language " + language);
@@ -74,7 +76,7 @@ public class Main {
 
                 // Get the data
                 String[] arguments = cmd.getArgs();
-                String data = "";
+                data = "";
                 if (arguments.length == 0) {
                     System.out.println("Error: No data input provided.");
                     System.out.println("Entering interactive mode: ");
@@ -82,12 +84,11 @@ public class Main {
                 } else {
                     data = arguments[0];
                 }
-
-                if (isInteractiveMode) {
-                    cli.run();
-                } else {
-                    cli.run(input, language, flashcard, mode, output, data);
-                }
+            }
+            if (isInteractiveMode) {
+                cli.run();
+            } else {
+                cli.run(input, language, flashcard, mode, output, data);
             }
         } catch (ParseException ex) {
             ex.printStackTrace();
