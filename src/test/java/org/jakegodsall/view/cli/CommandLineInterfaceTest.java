@@ -1,9 +1,9 @@
-package org.jakegodsall.view;
+package com.jakegodsall.view;
 
-import org.jakegodsall.config.LanguageConfig;
-import org.jakegodsall.models.Language;
-import org.jakegodsall.view.cli.CommandLineInterface;
-import org.jakegodsall.view.cli.CommandLineInterfaceFactory;
+import com.jakegodsall.config.LanguageConfig;
+import com.jakegodsall.models.Language;
+import com.jakegodsall.view.cli.CommandLineInterface;
+import com.jakegodsall.view.cli.CommandLineInterfaceFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

@@ -1,4 +1,4 @@
-package org.jakegodsall.utils;
+package com.jakegodsall.utils;
 
 import org.w3c.dom.ls.LSOutput;
 

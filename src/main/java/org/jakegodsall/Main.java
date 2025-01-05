@@ -1,8 +1,8 @@
-package org.jakegodsall;
+package com.jakegodsall;
 
 import org.apache.commons.cli.*;
-import org.jakegodsall.view.cli.CommandLineInterface;
-import org.jakegodsall.view.cli.CommandLineInterfaceFactory;
+import com.jakegodsall.view.cli.CommandLineInterface;
+import com.jakegodsall.view.cli.CommandLineInterfaceFactory;
 
 import java.util.Arrays;
 import java.util.List;

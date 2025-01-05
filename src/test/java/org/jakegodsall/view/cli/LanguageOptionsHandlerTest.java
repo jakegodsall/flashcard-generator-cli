@@ -1,8 +1,8 @@
-package org.jakegodsall.view.cli;
+package com.jakegodsall.view.cli;
 
-import org.jakegodsall.models.Language;
-import org.jakegodsall.models.enums.Gender;
-import org.jakegodsall.models.enums.Tense;
+import com.jakegodsall.models.Language;
+import com.jakegodsall.models.enums.Gender;
+import com.jakegodsall.models.enums.Tense;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

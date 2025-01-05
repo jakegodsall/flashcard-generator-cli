@@ -1,8 +1,8 @@
-package org.jakegodsall.view.cli;
+package com.jakegodsall.view.cli;
 
-import org.jakegodsall.config.ApiKeyConfig;
-import org.jakegodsall.config.impl.ApiKeyConfigImpl;
-import org.jakegodsall.exceptions.ApiKeyNotFoundException;
+import com.jakegodsall.config.ApiKeyConfig;
+import com.jakegodsall.config.impl.ApiKeyConfigImpl;
+import com.jakegodsall.exceptions.ApiKeyNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

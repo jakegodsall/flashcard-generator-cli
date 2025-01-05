@@ -1,14 +1,14 @@
-package org.jakegodsall.view.cli;
+package com.jakegodsall.view.cli;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.jakegodsall.models.Language;
-import org.jakegodsall.models.Options;
-import org.jakegodsall.models.enums.Gender;
-import org.jakegodsall.models.enums.Tense;
-import org.jakegodsall.utils.TenseUtils;
+import com.jakegodsall.models.Language;
+import com.jakegodsall.models.Options;
+import com.jakegodsall.models.enums.Gender;
+import com.jakegodsall.models.enums.Tense;
+import com.jakegodsall.utils.TenseUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

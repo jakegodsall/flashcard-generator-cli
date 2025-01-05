@@ -1,23 +1,23 @@
-package org.jakegodsall.view.cli;
+package com.jakegodsall.view.cli;
 
 import lombok.RequiredArgsConstructor;
-import org.jakegodsall.config.LanguageConfig;
-import org.jakegodsall.models.Language;
-import org.jakegodsall.models.Options;
-import org.jakegodsall.models.enums.FlashcardType;
-import org.jakegodsall.models.enums.InputMode;
-import org.jakegodsall.models.enums.OutputMode;
-import org.jakegodsall.models.flashcards.Flashcard;
-import org.jakegodsall.services.flashcard.FlashcardService;
-import org.jakegodsall.services.input.InputService;
-import org.jakegodsall.services.output.OutputService;
-import org.jakegodsall.services.input.impl.InputServiceCommaSeparatedStringMode;
-import org.jakegodsall.services.input.impl.InputServiceInteractiveMode;
-import org.jakegodsall.services.input.impl.InputServicePlainTextFileMode;
-import org.jakegodsall.services.output.impl.OutputServiceCsvMode;
-import org.jakegodsall.services.output.impl.OutputServiceJsonMode;
-import org.jakegodsall.utils.ConsoleUtils;
-import org.jakegodsall.utils.FilenameUtils;
+import com.jakegodsall.config.LanguageConfig;
+import com.jakegodsall.models.Language;
+import com.jakegodsall.models.Options;
+import com.jakegodsall.models.enums.FlashcardType;
+import com.jakegodsall.models.enums.InputMode;
+import com.jakegodsall.models.enums.OutputMode;
+import com.jakegodsall.models.flashcards.Flashcard;
+import com.jakegodsall.services.flashcard.FlashcardService;
+import com.jakegodsall.services.input.InputService;
+import com.jakegodsall.services.output.OutputService;
+import com.jakegodsall.services.input.impl.InputServiceCommaSeparatedStringMode;
+import com.jakegodsall.services.input.impl.InputServiceInteractiveMode;
+import com.jakegodsall.services.input.impl.InputServicePlainTextFileMode;
+import com.jakegodsall.services.output.impl.OutputServiceCsvMode;
+import com.jakegodsall.services.output.impl.OutputServiceJsonMode;
+import com.jakegodsall.utils.ConsoleUtils;
+import com.jakegodsall.utils.FilenameUtils;
 
 
 import javax.print.DocFlavor;
