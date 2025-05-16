@@ -18,7 +18,7 @@ import com.jakegodsall.services.output.impl.OutputServiceCsvMode;
 import com.jakegodsall.services.output.impl.OutputServiceJsonMode;
 import com.jakegodsall.utils.ConsoleUtils;
 import com.jakegodsall.utils.FilenameUtils;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.print.DocFlavor;
 import java.io.BufferedReader;
@@ -74,7 +74,7 @@ public class CommandLineInterface {
                     fileExtension = ".csv";
                     break;
                 case OutputMode.JSON:
-                    outputService = new OutputServiceJsonMode();
+                    outputService = new OutputServiceJsonMode(new ObjectMapper());
                     fileExtension = ".json";
                     break;
             }

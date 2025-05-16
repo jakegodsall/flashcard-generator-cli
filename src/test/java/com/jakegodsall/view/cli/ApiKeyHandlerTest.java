@@ -3,6 +3,8 @@ package com.jakegodsall.view.cli;
 import com.jakegodsall.config.ApiKeyConfig;
 import com.jakegodsall.config.impl.ApiKeyConfigImpl;
 import com.jakegodsall.exceptions.ApiKeyNotFoundException;
+import com.jakegodsall.view.cli.ApiKeyHandler;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

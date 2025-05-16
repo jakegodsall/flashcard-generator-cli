@@ -3,6 +3,8 @@ package com.jakegodsall.view.cli;
 import com.jakegodsall.models.Language;
 import com.jakegodsall.models.enums.Gender;
 import com.jakegodsall.models.enums.Tense;
+import com.jakegodsall.view.cli.LanguageOptionsHandler;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

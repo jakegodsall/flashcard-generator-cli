@@ -1,9 +1,7 @@
-package com.jakegodsall.view;
+package com.jakegodsall.view.cli;
 
 import com.jakegodsall.config.LanguageConfig;
 import com.jakegodsall.models.Language;
-import com.jakegodsall.view.cli.CommandLineInterface;
-import com.jakegodsall.view.cli.CommandLineInterfaceFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -33,7 +31,7 @@ class CommandLineInterfaceTest {
 
     @Disabled // Test fails with surefire plugin but success otherwise
     @Test
-    void getLanguageFromUser_correctInputLowerCase() throws IOException {
+    void getLanguageMode_correctInputLowerCase() throws IOException {
         // Define the language input
         String input = "ru\n";
         Language validLanguage = languages.get(input);
@@ -47,7 +45,7 @@ class CommandLineInterfaceTest {
         System.out.println("System.in (lowercase test): " + System.in);
 
         // Call the method
-        Language result = commandLineInterface.getLanguageFromUser(bufferedReader);
+        Language result = commandLineInterface.getLanguageMode(bufferedReader);
 
         // Debugging: Print the result
         System.out.println("Result (lowercase test): " + result);
@@ -61,7 +59,7 @@ class CommandLineInterfaceTest {
 
     @Disabled // Test fails with surefire plugin but success otherwise
     @Test
-    void getLanguageFromUser_correctInputUpperCase() throws IOException {
+    void getLanguageMode_correctInputUpperCase() throws IOException {
         // Define the language input
         String input = "RU\n";
         Language validLanguage = languages.get(input);
@@ -72,7 +70,7 @@ class CommandLineInterfaceTest {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         // Call the method
-        Language result = commandLineInterface.getLanguageFromUser(bufferedReader);
+        Language result = commandLineInterface.getLanguageMode(bufferedReader);
 
         // Verify the result
         assertThat(result).isEqualTo(validLanguage);
