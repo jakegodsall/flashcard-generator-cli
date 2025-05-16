@@ -20,12 +20,9 @@ import com.jakegodsall.utils.ConsoleUtils;
 import com.jakegodsall.utils.FilenameUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.print.DocFlavor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -61,8 +58,12 @@ public class CommandLineInterface {
             // FLASHCARD TYPE CHOICE
             FlashcardType flashcardType = getFlashcardType(consoleReader);
 
-            List<Flashcard> flashcards = flashcardService.generateFlashcardsInteractively(flashcardType, chosenLanguage, selectedOptions);
-//            List<Flashcard> flashcards = flashcardService.generateFlashcardsConcurrently(words, flashcardType, chosenLanguage, selectedOptions);
+            List<Flashcard> flashcards;
+            if (inputMode == InputMode.INTERACTIVE) {
+                flashcards = flashcardService.generateFlashcardsInteractively(flashcardType, chosenLanguage, selectedOptions);
+            } else {
+                flashcards = flashcardService.generateFlashcardsConcurrently(words, flashcardType, chosenLanguage, selectedOptions);
+            }
 
             // Get output mode
             OutputMode outputMode = getOutputMode(consoleReader);
@@ -85,10 +86,9 @@ public class CommandLineInterface {
 
         } catch (IOException ioException) {
             System.err.println(ioException.getMessage());
-//        } catch (ExecutionException e) {
-//            throw new RuntimeException(e);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
+        } catch (ExecutionException | InterruptedException e) {
+            System.err.println("Error generating flashcards: " + e.getMessage());
+            Thread.currentThread().interrupt(); // Restore interrupted status
         }
     }
 
@@ -96,8 +96,6 @@ public class CommandLineInterface {
         System.out.println("NON INTERACTIVE MODE RUNNING");
         System.out.println(data);
     }
-
-
 
     public Language getLanguageMode(BufferedReader bufferedReader) throws IOException {
         ConsoleUtils.printLanguageOptions(languages);

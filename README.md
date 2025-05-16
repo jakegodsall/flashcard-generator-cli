@@ -13,7 +13,7 @@ The generated flashcards can be exported to different formats, such as CSV and J
 - Interactive, batch processing, and file-based input modes.
 
 ## Requirements
-- Java 22 or higher
+- Java 21 or higher
 - Maven
 - An OpenAI API key
 - The flashcard-generator-core library (included as a dependency)
@@ -52,7 +52,7 @@ When you first run the Flashcard Generator CLI application, you will be prompted
 
 This key will be stored in the `api_config.json` file within the `.flashcard-generator` directory located in your home directory.
 
-For subsequent uses, the application will automatically read the API key from this file. You won’t need to enter the API key again unless you choose to modify it.
+For subsequent uses, the application will automatically read the API key from this file. You won't need to enter the API key again unless you choose to modify it.
 
 ### Modifying the API Key
 
