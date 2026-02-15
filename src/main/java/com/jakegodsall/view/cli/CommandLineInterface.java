@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
 
 @RequiredArgsConstructor
 public class CommandLineInterface {
@@ -57,12 +58,24 @@ public class CommandLineInterface {
 
             // FLASHCARD TYPE CHOICE
             FlashcardType flashcardType = getFlashcardType(consoleReader);
+            
+            // Get number of cards per word
+            int cardsPerWord = getCardsPerWord(consoleReader);
 
-            List<Flashcard> flashcards;
+            List<Flashcard> flashcards = new ArrayList<>();
             if (inputMode == InputMode.INTERACTIVE) {
                 flashcards = flashcardService.generateFlashcardsInteractively(flashcardType, chosenLanguage, selectedOptions);
             } else {
-                flashcards = flashcardService.generateFlashcardsConcurrently(words, flashcardType, chosenLanguage, selectedOptions);
+                for (String word : words) {
+                    List<Flashcard> wordFlashcards = flashcardService.generateMultipleFlashcardsForWord(
+                        word, 
+                        cardsPerWord, 
+                        flashcardType, 
+                        chosenLanguage, 
+                        selectedOptions
+                    );
+                    flashcards.addAll(wordFlashcards);
+                }
             }
 
             // Get output mode
@@ -203,5 +216,27 @@ public class CommandLineInterface {
     public String getWordFromUser(BufferedReader bufferedReader) throws IOException {
         System.out.println("Enter a word:");
         return bufferedReader.readLine();
+    }
+
+    private int getCardsPerWord(BufferedReader bufferedReader) throws IOException {
+        System.out.println("How many flashcards would you like to generate per word? (1-5):");
+        int cardsPerWord = 1;
+        boolean validInput = false;
+        
+        while (!validInput) {
+            try {
+                String input = bufferedReader.readLine().trim();
+                int number = Integer.parseInt(input);
+                if (number >= 1 && number <= 5) {
+                    cardsPerWord = number;
+                    validInput = true;
+                } else {
+                    System.out.println("Please enter a number between 1 and 5:");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number between 1 and 5:");
+            }
+        }
+        return cardsPerWord;
     }
 }

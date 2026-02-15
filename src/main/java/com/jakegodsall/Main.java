@@ -63,7 +63,7 @@ public class Main {
             } else {
                 // Parse the options
                 input = getValidaValueForOption(cmd, "i", INPUT_VALID_VALUES, INPUT_DEFAULT_VALUE);
-               language = getValidaValueForOption(cmd, "l", LANGUAGE_VALID_VALUES, LANGUAGE_DEFAULT_VALUE);
+                language = getValidaValueForOption(cmd, "l", LANGUAGE_VALID_VALUES, LANGUAGE_DEFAULT_VALUE);
                 flashcard = getValidaValueForOption(cmd, "f", FLASHCARD_VALID_VALUES, FLASHCARD_DEFAULT_VALUE);
                 mode = getValidaValueForOption(cmd, "m", MODE_VALID_VALUES, MODE_DEFAULT_VALUE);
                 output = getValidaValueForOption(cmd, "o", OUTPUT_VALID_VALUES, OUTPUT_DEFAULT_VALUE);
