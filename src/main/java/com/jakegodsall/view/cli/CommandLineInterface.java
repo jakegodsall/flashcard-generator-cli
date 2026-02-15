@@ -4,10 +4,14 @@ import lombok.RequiredArgsConstructor;
 import com.jakegodsall.config.LanguageConfig;
 import com.jakegodsall.models.Language;
 import com.jakegodsall.models.Options;
-import com.jakegodsall.models.enums.FlashcardType;
 import com.jakegodsall.models.enums.InputMode;
 import com.jakegodsall.models.enums.OutputMode;
 import com.jakegodsall.models.flashcards.Flashcard;
+import com.jakegodsall.models.flashcards.components.FlashcardComponent;
+import com.jakegodsall.models.flashcards.components.SourceLanguageWord;
+import com.jakegodsall.models.flashcards.components.TargetLanguageWord;
+import com.jakegodsall.models.flashcards.components.SourceLanguageSentence;
+import com.jakegodsall.models.flashcards.components.TargetLanguageSentence;
 import com.jakegodsall.services.flashcard.FlashcardService;
 import com.jakegodsall.services.input.InputService;
 import com.jakegodsall.services.output.OutputService;
@@ -25,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.ArrayList;
 
 @RequiredArgsConstructor
@@ -44,7 +47,8 @@ public class CommandLineInterface {
             apiKeyHandler.handle(consoleReader);
 
             // LANGUAGE CHOICE
-            Language chosenLanguage = getLanguageMode(consoleReader);
+            Language targetLanguage = getLanguageMode(consoleReader);
+            Language sourceLanguage = Language.builder().name("English").supportsStress(false).build();
             Options selectedOptions = Options.builder().build();
 
             // INPUT MODE CHOICE
@@ -56,23 +60,24 @@ public class CommandLineInterface {
             }
             List<String> words = inputService.getInput();
 
-            // FLASHCARD TYPE CHOICE
-            FlashcardType flashcardType = getFlashcardType(consoleReader);
-            
+            // FLASHCARD COMPONENT CHOICE
+            List<FlashcardComponent> components = getFlashcardComponents(consoleReader);
+
             // Get number of cards per word
             int cardsPerWord = getCardsPerWord(consoleReader);
 
             List<Flashcard> flashcards = new ArrayList<>();
             if (inputMode == InputMode.INTERACTIVE) {
-                flashcards = flashcardService.generateFlashcardsInteractively(flashcardType, chosenLanguage, selectedOptions);
+                flashcards = flashcardService.generateFlashcardsInteractively(components, sourceLanguage, targetLanguage, selectedOptions);
             } else {
                 for (String word : words) {
                     List<Flashcard> wordFlashcards = flashcardService.generateMultipleFlashcardsForWord(
-                        word, 
-                        cardsPerWord, 
-                        flashcardType, 
-                        chosenLanguage, 
-                        selectedOptions
+                        word,
+                        components,
+                        sourceLanguage,
+                        targetLanguage,
+                        selectedOptions,
+                        cardsPerWord
                     );
                     flashcards.addAll(wordFlashcards);
                 }
@@ -94,14 +99,11 @@ public class CommandLineInterface {
             }
 
 
-            String fileName = FilenameUtils.generateFilename(chosenLanguage, fileExtension);
+            String fileName = FilenameUtils.generateFilename(targetLanguage, fileExtension);
             outputService.writeToFile(flashcards, fileName);
 
         } catch (IOException ioException) {
             System.err.println(ioException.getMessage());
-        } catch (ExecutionException | InterruptedException e) {
-            System.err.println("Error generating flashcards: " + e.getMessage());
-            Thread.currentThread().interrupt(); // Restore interrupted status
         }
     }
 
@@ -192,12 +194,12 @@ public class CommandLineInterface {
         return result;
     }
 
-    public FlashcardType getFlashcardType(BufferedReader bufferedReader) throws IOException {
+    public List<FlashcardComponent> getFlashcardComponents(BufferedReader bufferedReader) throws IOException {
         ConsoleUtils.printFlashcardModes();
 
         boolean validInput = false;
         String input = "";
-        FlashcardType result = FlashcardType.WORD;
+        List<FlashcardComponent> result = List.of(new TargetLanguageWord(), new SourceLanguageWord());
         while (!validInput) {
             input = bufferedReader.readLine();
             if (input == null)
@@ -206,7 +208,7 @@ public class CommandLineInterface {
                 validInput = true;
             }
             if (input.equals("2")) {
-                result = FlashcardType.SENTENCE;
+                result = List.of(new TargetLanguageWord(), new SourceLanguageWord(), new TargetLanguageSentence(), new SourceLanguageSentence());
                 validInput = true;
             }
         }
